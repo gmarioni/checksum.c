@@ -37,23 +37,25 @@ int main (int argc, char * argv[], char ** envp) {
   read(STDIN_FILENO, &header, count);
   carryForward = (carryForward + header[0] + header[1])/(max_int+1);
   runningChecksum = (carryForward + header[0] + header[1])%(max_int+1);
-  printf("%d\n", carryForward);
-  printf("%d\n", runningChecksum);
-/*   for(int c =2; c<=count-1; c++) {
-      runningChecksum = carryForward + runningChecksum + header[c];
-      carryForward = (carryForward + header[0] + header[1])%max_int;
-
+ /*  printf("%d\n", carryForward);
+  printf("%d\n", runningChecksum); */
+  for(int c =2; c<=count-1; c++) {
+      if(c==5) {
+        runningChecksum = (carryForward + runningChecksum + 0)%(max_int + 1);
+        checksum = header[5];
+      } else {
+        runningChecksum = (carryForward + runningChecksum + header[c])%(max_int + 1);
+        carryForward = (runningChecksum + header[c])/max_int;
+      }
     }
-    quotient = sum /(max_int + 1);
-    remainder = sum % (max_int + 1);
-    sum = quotient + remainder;
-    complement = max_int - sum;
+    complement = max_int - runningChecksum;
+    /* printf("%d\n", complement); */
 
   fprintf(stdout, "Stored Checksum: %d, Computed Checksum: %d\n", checksum, complement);
   if (checksum != complement ) {
     fprintf(stderr, "Error Detected!\n"); 
     return 1;
-  } */
+  }
   
   return 0;
 }

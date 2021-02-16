@@ -28,7 +28,10 @@ int main (int argc, char * argv[], char ** envp) {
   int remainder;
 
   byte header[10];
-
+  /* Ok so the professor explained that the main difference was the
+  read call (which involves the makefile and ints2bytes) but the rest
+  is the same as the java program we made (we just have to change 
+  the algorithm to be the incremental one he showed on the excel spreadsheet) */
   read(STDIN_FILENO, &header, count);
     for(int c =1; c<=count; c++) {
       if(c==6) {

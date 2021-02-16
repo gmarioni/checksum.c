@@ -26,19 +26,23 @@ int main (int argc, char * argv[], char ** envp) {
   byte complement;
   int quotient;
   int remainder;
+  int carryForward = 0;
+  int runningChecksum = 0;
+
 
   byte header[10];
-  /* Ok so the professor explained that the main difference was the
-  read call (which involves the makefile and ints2bytes) but the rest
-  is the same as the java program we made (we just have to change 
-  the algorithm to be the incremental one he showed on the excel spreadsheet) */
+  /* Ok, so far so good, lns 36-39 are producing the right
+  output given the 156.txt file; now I just need to make
+  the rest of the algorithm*/
   read(STDIN_FILENO, &header, count);
-    for(int c =1; c<=count; c++) {
-      if(c==6) {
-        checksum = header[c];
-        header[c] = 0;
-      }
-      sum += header[c];
+  carryForward = (carryForward + header[0] + header[1])/(max_int+1);
+  runningChecksum = (carryForward + header[0] + header[1])%(max_int+1);
+  printf("%d\n", carryForward);
+  printf("%d\n", runningChecksum);
+/*   for(int c =2; c<=count-1; c++) {
+      runningChecksum = carryForward + runningChecksum + header[c];
+      carryForward = (carryForward + header[0] + header[1])%max_int;
+
     }
     quotient = sum /(max_int + 1);
     remainder = sum % (max_int + 1);
@@ -49,6 +53,7 @@ int main (int argc, char * argv[], char ** envp) {
   if (checksum != complement ) {
     fprintf(stderr, "Error Detected!\n"); 
     return 1;
-  }
+  } */
+  
   return 0;
 }

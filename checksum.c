@@ -23,9 +23,9 @@ int main (int argc, char * argv[], char ** envp) {
   byte complement; */
   int retval;
   int fd;
-  fd = open("/Users/gerardomarioni/Desktop/Spring 2021/COMP 122/checksum.c");
-  byte buffer[8];
-  int *p = &buffer;
+  fd = open(STDIN_FILENO);
+  char buffer[10];
+  int *p = (int) &buffer;
   retval = (int) read(fd, (void *) &buffer, count);
   printf("%d", retval);
   /* the following is the prototype for the read system call */

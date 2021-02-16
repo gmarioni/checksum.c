@@ -12,6 +12,8 @@
 #include "stdlib.h"
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/types.h>
+#include <sys/uio.h>
 
 #define max_int (255)
 #define byte unsigned char
@@ -22,15 +24,23 @@ int main (int argc, char * argv[], char ** envp) {
   int sum = 0;   
   byte checksum; 
   byte complement;
-  int retval;
-  int fd;
-  fd = open(STDIN_FILENO, O_RDONLY);
-  char buffer[10];
-  int *p = (int *) &buffer;
+  int quotient;
+  int remainder;
 
-  /* the following is the prototype for the read system call */
-  int readVal = read(STDIN_FILENO, (void *) &buffer, count);
-  printf("%d", (int) &buffer); 
+  byte header[10];
+
+  read(STDIN_FILENO, &header, count);
+    for(int c =1; c<=count; c++) {
+      if(c==6) {
+        checksum = header[c];
+        header[c] = 0;
+      }
+      sum += header[c];
+    }
+    quotient = sum /(max_int + 1);
+    remainder = sum % (max_int + 1);
+    sum = quotient + remainder;
+    complement = max_int - sum;
 
   fprintf(stdout, "Stored Checksum: %d, Computed Checksum: %d\n", checksum, complement);
   if (checksum != complement ) {

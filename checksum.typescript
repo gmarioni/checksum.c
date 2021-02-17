@@ -1,0 +1,12 @@
+Script started on Tue 16 Feb 2021 06:43:06 PM PST
+]0;gam39155@ssh: ~/comp122/checksum.c[01;32mgam39155@ssh[00m:[01;34m~/comp122/checksum.c[00m$ cat 156.txt | inst[K[Kts2bytes | checksum
+Stored Checksum: 156, Computed Checksum: 156
+]0;gam39155@ssh: ~/comp122/checksum.c[01;32mgam39155@ssh[00m:[01;34m~/comp122/checksum.c[00m$ cat 229.txt | ints2b yes[K[K[K[Kytes | chec[Kec[K[Kcksum
+Stored Checksum: 229, Computed Checksum: 132
+Error Detected!
+]0;gam39155@ssh: ~/comp122/checksum.c[01;32mgam39155@ssh[00m:[01;34m~/comp122/checksum.c[00m$ cat 81.txt | ints2bye[Ktes | checksum
+Stored Checksum: 81, Computed Checksum: 81
+]0;gam39155@ssh: ~/comp122/checksum.c[01;32mgam39155@ssh[00m:[01;34m~/comp122/checksum.c[00m$ exit
+exit
+
+Script done on Tue 16 Feb 2021 06:43:47 PM PST

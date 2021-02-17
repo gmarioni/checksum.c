@@ -1,11 +1,11 @@
 /********************************/
-/* Program Name:                */
-/* Author:                      */
-/* Date:                        */
+/* Program Name: Checksum        */
+/* Author:   Gerardo Marioni     */
+/* Date:    2-16-2021            */
 /********************************/
-/* Description:                 */
+/* Description:  Checksum program written in C */
 /* Validation Checks:           */
-/* Enhancements:                */
+/* Enhancements:       none     */
 /********************************/
 
 #include "stdio.h"
@@ -31,25 +31,28 @@ int main (int argc, char * argv[], char ** envp) {
 
 
   byte header[10];
-  /* Ok, so far so good, lns 36-39 are producing the right
-  output given the 156.txt file; now I just need to make
-  the rest of the algorithm*/
+  /* The loop works, just need to now add input validation for the read
+  part just before the loop*/
   read(STDIN_FILENO, &header, count);
-  carryForward = (carryForward + header[0] + header[1])/(max_int+1);
   runningChecksum = (carryForward + header[0] + header[1])%(max_int+1);
- /*  printf("%d\n", carryForward);
-  printf("%d\n", runningChecksum); */
+  carryForward = (carryForward + header[0] + header[1])/(max_int+1);
+    
   for(int c =2; c<=count-1; c++) {
       if(c==5) {
+        carryForward = (runningChecksum + 0)/(max_int + 1);
         runningChecksum = (carryForward + runningChecksum + 0)%(max_int + 1);
-        checksum = header[5];
-      } else {
+        checksum = header[c];
+
+      } /* else if (header[c] < 0 || header[c] > max_int) {
+        fprintf(stdout, "Error, invalid input. Ensure that values are within range of 0..(2^8)-1 \n");
+      }  */else {
+        carryForward = (runningChecksum + header[c])/(max_int + 1);
         runningChecksum = (carryForward + runningChecksum + header[c])%(max_int + 1);
-        carryForward = (runningChecksum + header[c])/max_int;
+
       }
     }
     complement = max_int - runningChecksum;
-    /* printf("%d\n", complement); */
+
 
   fprintf(stdout, "Stored Checksum: %d, Computed Checksum: %d\n", checksum, complement);
   if (checksum != complement ) {

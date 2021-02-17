@@ -31,12 +31,12 @@ int main (int argc, char * argv[], char ** envp) {
 
 
   byte header[10];
-  /* The loop works, just need to now add input validation for the read
-  part just before the loop*/
+  /* The loop works, just need to now add input validation to end program if input
+  is out of bounds*/
   read(STDIN_FILENO, &header, count);
-  if(header[0]<0 || header[1]>max_int || header[1]<0 || header[1]<max_int) {
+  if(header[0] > max_int /* || header[0] > max_int || header[1] < 0 || header[1] > max_int */) {
     fprintf(stdout, "Error, invalid input. Ensure that values are within range of 0..(2^8)-1 \n");
-
+    exit(1);
   }
   runningChecksum = (carryForward + header[0] + header[1])%(max_int+1);
   carryForward = (carryForward + header[0] + header[1])/(max_int+1);
@@ -49,6 +49,7 @@ int main (int argc, char * argv[], char ** envp) {
 
       } else if (header[c] < 0 || header[c] > max_int) {
         fprintf(stdout, "Error, invalid input. Ensure that values are within range of 0..(2^8)-1 \n");
+        exit(1);
       } else {
         carryForward = (runningChecksum + header[c])/(max_int + 1);
         runningChecksum = (carryForward + runningChecksum + header[c])%(max_int + 1);

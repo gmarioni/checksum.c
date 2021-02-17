@@ -4,7 +4,7 @@
 /* Date:    2-16-2021            */
 /********************************/
 /* Description:  Checksum program written in C */
-/* Validation Checks:   ensure that input values are within 0...(2^8)-1  */
+/* Validation Checks:   none  */
 /* Enhancements:       none     */
 /********************************/
 
@@ -24,41 +24,31 @@ int main (int argc, char * argv[], char ** envp) {
   int sum = 0;   
   byte checksum; 
   byte complement;
-  int quotient;
-  int remainder;
   int carryForward = 0;
   int runningChecksum = 0;
 
 
   byte header[10];
-  /* The loop works, just need to now add input validation to end program if input
-  is out of bounds*/
+  //the program reads the file allocating the buffer space
   read(STDIN_FILENO, &header, count);
-  if(header[0] > max_int /* || header[0] > max_int || header[1] < 0 || header[1] > max_int */) {
-    fprintf(stdout, "Error, invalid input. Ensure that values are within range of 0..(2^8)-1 \n");
-    exit(1);
-  }
   runningChecksum = (carryForward + header[0] + header[1])%(max_int+1);
   carryForward = (carryForward + header[0] + header[1])/(max_int+1);
-    
+  //this for loop calculates the running checksum calculation (one's complement) 
   for(int c =2; c<=count-1; c++) {
       if(c==5) {
         carryForward = (runningChecksum + 0)/(max_int + 1);
         runningChecksum = (carryForward + runningChecksum + 0)%(max_int + 1);
         checksum = header[c];
-
-      } else if (header[c] < 0 || header[c] > max_int) {
-        fprintf(stdout, "Error, invalid input. Ensure that values are within range of 0..(2^8)-1 \n");
-        exit(1);
       } else {
         carryForward = (runningChecksum + header[c])/(max_int + 1);
         runningChecksum = (carryForward + runningChecksum + header[c])%(max_int + 1);
-
       }
     }
+    //complement is determined from the one's complement calculation
     complement = max_int - runningChecksum;
 
-
+  /* result is printed out and error message is displayed if stored and 
+  calculated checksum don't match */
   fprintf(stdout, "Stored Checksum: %d, Computed Checksum: %d\n", checksum, complement);
   if (checksum != complement ) {
     fprintf(stderr, "Error Detected!\n"); 
